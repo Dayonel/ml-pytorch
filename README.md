@@ -9,7 +9,8 @@ Install [Python](https://www.python.org/downloads/)
 Install required libraries
 
 ```bash
-pip install torch torchvision "numpy<2.0" matplotlib
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+pip install "numpy<2.0" matplotlib
 ```
 
 ## Download dataset
