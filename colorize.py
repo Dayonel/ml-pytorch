@@ -1,3 +1,4 @@
+from torch.utils.data import DataLoader
 import random
 import torch
 import pathlib
@@ -107,16 +108,15 @@ class ColorizationDatasetCustom(Dataset):
             return img, class_idx  # return data, label (X, y)
 
 
-# Augment train data
 train_transforms = transforms.Compose([
-    transforms.Resize((64, 64)),
-    transforms.RandomHorizontalFlip(p=0.5),
-    transforms.ToTensor()
+    transforms.Resize((224, 224)),
+    transforms.TrivialAugmentWide(num_magnitude_bins=31),  # how intense
+    transforms.ToTensor()  # use ToTensor() last to get everything between 0 & 1
 ])
 
-# Don't augment test data, only reshape
+# Don't need to perform augmentation on the test data
 test_transforms = transforms.Compose([
-    transforms.Resize((64, 64)),
+    transforms.Resize((224, 224)),
     transforms.ToTensor()
 ])
 
@@ -171,11 +171,50 @@ def display_random_images(dataset: torch.utils.data.dataset.Dataset,
         plt.show()
 
 
-# Get class names as a list
-class_names = train_data.classes
+# Turn train and test custom Dataset's into DataLoader's
+train_dataloader_custom = DataLoader(dataset=train_data_custom,  # use custom created train Dataset
+                                     batch_size=1,  # how many samples per batch?
+                                     # how many subprocesses to use for data loading? (higher = more)
+                                     num_workers=0,
+                                     shuffle=True)  # shuffle the data?
 
-# Display random images from ImageFolder created Dataset
-display_random_images(train_data,
-                      n=5,
-                      classes=class_names,
-                      seed=None)
+test_dataloader_custom = DataLoader(dataset=test_data_custom,  # use custom created test Dataset
+                                    batch_size=1,
+                                    num_workers=0,
+                                    shuffle=False)  # don't usually need to shuffle testing data
+
+# Get all image paths
+image_path_list = list(data_path.glob("*/*/*.jpg"))
+
+
+def plot_transformed_images(image_paths, transform, n=3, seed=42):
+    random.seed(seed)
+    random_image_paths = random.sample(image_paths, k=n)
+    for image_path in random_image_paths:
+        with Image.open(image_path) as f:
+            fig, ax = plt.subplots(1, 2)
+            ax[0].imshow(f)
+            ax[0].set_title(f"Original \nSize: {f.size}")
+            ax[0].axis("off")
+
+            # Transform and plot image
+            # Note: permute() will change shape of image to suit matplotlib
+            # (PyTorch default is [C, H, W] but Matplotlib is [H, W, C])
+            transformed_image = transform(f).permute(1, 2, 0)
+            ax[1].imshow(transformed_image)
+            ax[1].set_title(f"Transformed \nSize: {transformed_image.shape}")
+            ax[1].axis("off")
+
+            fig.suptitle(f"Class: {image_path.parent.stem}", fontsize=16)
+
+            # Display the plot
+            plt.show()
+
+
+# Plot random images
+plot_transformed_images(
+    image_paths=image_path_list,
+    transform=train_transforms,
+    n=3,
+    seed=None
+)
