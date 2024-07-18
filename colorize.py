@@ -1,8 +1,12 @@
 import torch
-from dataset_loader import load
-from dataset_class import ColorizeDataset
 from pathlib import Path
 from torchvision import transforms
+from colorize_loader import load
+from colorize_dataset import ColorizeDataset
+from colorize_model import ColorizeModel
+from colorize_train import train
+import torch.nn as nn
+import torch.optim as optim
 
 # Setup train and testing paths
 data_path = Path("dataset/")
@@ -22,9 +26,21 @@ transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
-# Turn our images into a Dataset capable of being used with PyTorch
-train_loader, test_loader = load(transform, train_dir, test_dir)
+# Protect multi-threading
+if __name__ == '__main__':
+    # Data from images in folders into Tensors
+    train_loader, test_loader = load(transform, train_dir, test_dir)
+    train_data = ColorizeDataset(targ_dir=train_dir, transform=transform)
+    test_data = ColorizeDataset(targ_dir=test_dir, transform=transform)
 
-# Write a custom dataset class
-train_data = ColorizeDataset(targ_dir=train_dir, transform=transform)
-test_data = ColorizeDataset(targ_dir=test_dir, transform=transform)
+    # Colorization model neural network
+    model = ColorizeModel().to(device)
+
+    # mean squared error function (measures the average of the squares of the errors)
+    criterion = nn.MSELoss()
+
+    # Adam algorithm with learning rate of 0.001
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+    # train network
+    train(train_loader, device, model, criterion, optimizer)
