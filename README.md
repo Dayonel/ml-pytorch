@@ -6,50 +6,52 @@ Colorize black and white images using PyTorch.
 
 Install [Python](https://www.python.org/downloads/)
 
-Install datasets and Pillow libraries
+Install required libraries
 
 ```bash
-pip install datasets Pillow
-```
-
-Install huggingface cli
-
-```bash
-pip install -U "huggingface_hub[cli]"
-```
-
-Create a virtual environment
-
-```bash
-python -m venv .env
-
-# Linux and macOS
-source .env/bin/activate
-
-# Windows
-.env/Scripts/activate
-
-pip install --upgrade huggingface_hub
-```
-
-Create new [token](https://huggingface.co/settings/tokens) with permissions
-> Read access to contents of all public gated repos you can access
-
-Login to huggingface and paste token
-
-```bash
-huggingface-cli login
+pip install torch torchvision "numpy<2.0"
 ```
 
 ## Download dataset
 
-We are going to use [imagenet-1k](https://huggingface.co/datasets/ILSVRC/imagenet-1k) dataset.
+We are going to use a subset of [Food-101](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/) dataset: `pizza, steak and sushi`.
+
+[Download it here (15MB)](https://github.com/mrdbourke/pytorch-deep-learning/raw/main/data/pizza_steak_sushi.zip)
+
+```
+pizza_steak_sushi/
+   train/
+       pizza/
+           image01.jpeg
+           ...
+       steak/
+           image04.jpeg
+           ...
+       sushi/
+           image07.jpeg
+           ...
+   test/
+       pizza/
+           image101.jpeg
+           ...
+       steak/
+           image104.jpeg
+           ...
+       sushi/
+           image107.jpeg
+           ...
+```
 
 ```bash
-python
+# Unzipping archive
+tar -xzvf pizza_steak_sushi.zip --directory dataset
 
-from datasets import load_dataset
-ds = load_dataset("imagenet-1k", trust_remote_code=True)
-train_ds = ds["train"]
-train_ds[0]["image"]  # a PIL Image
+# Deleting non-needed anymore archive
+rm pizza_steak_sushi.zip
+```
+
+## Run
+
+```bash
+python colorize.py
 ```
