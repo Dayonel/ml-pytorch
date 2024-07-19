@@ -52,3 +52,6 @@ if __name__ == '__main__':
 
     # random image from the internet
     visualize_random(img_in, img_out, model, device)
+
+    # save model (optional) uncomment to save
+    # torch.save(model.state_dict(), 'model.pth')

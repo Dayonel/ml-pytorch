@@ -6,7 +6,7 @@ import torchvision.transforms as transforms
 
 def train(train_loader, device, model, criterion, optimizer):
     # We pass entire dataset to the model x10 times
-    EPOCHS = 10
+    EPOCHS = 10  # usually we train we 30
     # Training loop
     for epoch in range(EPOCHS):
         for i, (image, _) in enumerate(train_loader):

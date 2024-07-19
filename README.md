@@ -56,3 +56,7 @@ rm pizza_steak_sushi.zip
 ```bash
 python colorize.py
 ```
+
+# Result
+
+![colorized_2](https://github.com/user-attachments/assets/2c9ff2bc-361c-4ef8-b789-3d0c945c16d7)
