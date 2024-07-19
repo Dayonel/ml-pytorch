@@ -1,10 +1,10 @@
 from typing import Tuple, Dict, List
 import os
 
-# # Finds the class folder names in a target directory.
-# # Example:
-# # find_classes("food_images/train")
-# # (["class_1", "class_2"], {"class_1": 0, ...})
+# Finds the class folder names in a target directory.
+# Example:
+# find_classes("food_images/train")
+# (["class_1", "class_2"], {"class_1": 0, ...})
 
 
 def find_classes(directory: str) -> Tuple[List[str], Dict[str, int]]:
