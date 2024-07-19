@@ -18,7 +18,7 @@ class ColorizeDataset(Dataset):
     # Load images via path
     def load_image(self, index: int) -> Image.Image:
         image_path = self.paths[index]
-        return Image.open(image_path)
+        return Image.open(image_path).convert('RGB')  # Ensure RGB format
 
     def __len__(self) -> int:
         return len(self.paths)
