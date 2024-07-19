@@ -7,7 +7,7 @@ import os
 
 def load(transform, train_dir, test_dir):
 
-    # Use ImageFolder to create dataset(s)
+    # Use out Custom class to create dataset(s)
     train_dataset = ColorizeDataset(targ_dir=train_dir, transform=transform)
     test_dataset = ColorizeDataset(targ_dir=test_dir, transform=transform)
 

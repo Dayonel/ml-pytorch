@@ -1,12 +1,12 @@
 import torch
+import torch.nn as nn
+import torch.optim as optim
 from pathlib import Path
 from torchvision import transforms
 from colorize_loader import load
-from colorize_dataset import ColorizeDataset
 from colorize_model import ColorizeModel
 from colorize_train import train
-import torch.nn as nn
-import torch.optim as optim
+from colorize_visualize import visualize
 
 # Protect multi-threading
 if __name__ == '__main__':
@@ -42,3 +42,6 @@ if __name__ == '__main__':
 
     # train network
     train(train_loader, device, model, criterion, optimizer)
+
+    # visualize 3 images side by side for comparison
+    visualize(test_loader, model, device)
