@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from torchvision.transforms.functional import rgb_to_grayscale
+from PIL import Image
+import torchvision.transforms as transforms
 
 
 def visualize(test_loader, model, device):
@@ -64,3 +66,56 @@ def show_image(img):
         plt.imshow(npimg, cmap='gray')
     else:
         plt.imshow(np.transpose(npimg, (1, 2, 0)))
+
+
+# Random image from the internet
+def visualize_random(img_in, img_out, model, device):
+    # original
+    original = Image.open(img_in)
+
+    # Convert the image to grayscale
+    grayscale = original.convert("L")
+
+    transform = transforms.Compose([
+        transforms.ToTensor()
+    ])
+
+    img_tensor = transform(grayscale).unsqueeze(0)  # Apply the transformations
+    model.eval()  # model in evaluation mode
+
+    img_tensor = img_tensor.to(device)  # move image to gpu or cpu
+
+    with torch.no_grad():
+        colorized_tensor = model(img_tensor)
+
+        # Convert the tensor back to an image
+        colorized = transforms.ToPILImage()(colorized_tensor.squeeze(0).cpu())
+
+        # Optionally, save the image
+        colorized.save(img_out)
+
+    visualize_random_three_sides(original, grayscale, colorized)
+
+
+# Displays the random image in a grid of 3 comparison
+def visualize_random_three_sides(original, grayscale, colorized):
+    # Grid 1x3
+    _, ax = plt.subplots(1, 3, figsize=(18, 6))
+
+    # Black & white
+    ax[0].imshow(grayscale, cmap='gray')
+    ax[0].set_title("Black & White")
+    ax[0].axis('off')
+
+    # Colorized
+    ax[1].imshow(colorized)
+    ax[1].set_title("Colorized")
+    ax[1].axis('off')
+
+    # Original
+    ax[2].imshow(original)
+    ax[2].set_title("Original")
+    ax[2].axis('off')
+
+    plt.tight_layout()
+    plt.show()
