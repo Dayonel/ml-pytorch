@@ -1,5 +1,5 @@
 from torch.utils.data import DataLoader
-from torchvision import datasets
+from colorize_dataset import ColorizeDataset
 import os
 
 # Turn our images into a Dataset capable of being used with PyTorch
@@ -8,8 +8,8 @@ import os
 def load(transform, train_dir, test_dir):
 
     # Use ImageFolder to create dataset(s)
-    train_dataset = datasets.ImageFolder(root=train_dir, transform=transform)
-    test_dataset = datasets.ImageFolder(root=test_dir, transform=transform)
+    train_dataset = ColorizeDataset(targ_dir=train_dir, transform=transform)
+    test_dataset = ColorizeDataset(targ_dir=test_dir, transform=transform)
 
     # Setup batch size and number of workers
     BATCH_SIZE = 32

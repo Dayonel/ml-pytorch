@@ -30,8 +30,6 @@ if __name__ == '__main__':
 
     # Data from images in folders into Tensors
     train_loader, test_loader = load(transform, train_dir, test_dir)
-    train_data = ColorizeDataset(targ_dir=train_dir, transform=transform)
-    test_data = ColorizeDataset(targ_dir=test_dir, transform=transform)
 
     # Colorization model neural network
     model = ColorizeModel().to(device)

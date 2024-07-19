@@ -17,6 +17,7 @@ def train(train_loader, device, model, criterion, optimizer):
 
             # Forward pass
             outputs = model(grayscale)
+            # We compute the loss comparing the model's output to the original images
             loss = criterion(outputs, image)
 
             # Backward pass and optimize
