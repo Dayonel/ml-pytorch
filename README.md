@@ -5,6 +5,9 @@ Colorize black and white images using PyTorch.
 ## Google colab
 Try it directly in [Google Colab](https://colab.research.google.com/drive/1tLmS9G9ig8mtXZh5aPJybpUdjUStYTjU?usp=sharing).
 
+Improved version: [Google Colab](https://colab.research.google.com/drive/1rNY1SrYFLqvi_c45LEc0ZKqOnePWZUtY?usp=sharing).\
+*NOTE: (5GB) this may take hours*
+
 ## Installation
 
 Install [Python](https://www.python.org/downloads/)
