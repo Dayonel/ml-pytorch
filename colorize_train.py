@@ -25,8 +25,7 @@ def train(train_loader, device, model, criterion, optimizer):
             optimizer.step()
 
             # Print statistics
-            if i % 100 == 0:
-                print(f"Epoch [{epoch+1}/{EPOCHS}], Step [{i +
-                      1}/{len(train_loader)}], Loss: {loss.item():.4f}")
+            print(f"Epoch [{epoch+1}/{EPOCHS}], Step [{i +
+                  1}/{len(train_loader)}], Loss: {loss.item():.4f}")
 
     print("Finished Training")

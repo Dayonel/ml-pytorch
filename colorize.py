@@ -8,26 +8,26 @@ from colorize_train import train
 import torch.nn as nn
 import torch.optim as optim
 
-# Setup train and testing paths
-data_path = Path("dataset/")
-train_dir = data_path / "train"
-test_dir = data_path / "test"
-
-# Setup device-agnostic code
-device = "cuda" if torch.cuda.is_available() else "cpu"
-if torch.cuda.is_available():
-    print(f"Using GPU: {torch.cuda.get_device_name(0)}")
-else:
-    print("Using CPU")
-
- # Create simple transform
-transform = transforms.Compose([
-    transforms.Resize((64, 64)),
-    transforms.ToTensor(),
-])
-
 # Protect multi-threading
 if __name__ == '__main__':
+    # Setup train and testing paths
+    data_path = Path("dataset/")
+    train_dir = data_path / "train"
+    test_dir = data_path / "test"
+
+    # Setup device-agnostic code
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    if torch.cuda.is_available():
+        print(f"Using GPU: {torch.cuda.get_device_name(0)}")
+    else:
+        print("Using CPU")
+
+    # Create simple transform
+    transform = transforms.Compose([
+        transforms.Resize((64, 64)),
+        transforms.ToTensor(),
+    ])
+
     # Data from images in folders into Tensors
     train_loader, test_loader = load(transform, train_dir, test_dir)
     train_data = ColorizeDataset(targ_dir=train_dir, transform=transform)
